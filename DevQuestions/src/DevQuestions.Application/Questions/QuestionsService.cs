@@ -1,7 +1,13 @@
 ﻿using DevQuestion.Contracts.Questions;
+using DevQuestions.Application.Extensions;
+using DevQuestions.Application.FulltextSeatch;
+using DevQuestions.Application.Questions.Fails;
+using DevQuestions.Application.Questions.Fails.Exceptions;
 using DevQuestions.Domain.Questions;
 using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
+using Shared;
 
 namespace DevQuestions.Application.Questions;
 
@@ -26,15 +32,19 @@ public class QuestionsService : IQuestionsService
         var validationResult = await _validator.ValidateAsync(questionDto, cancellationToken);
         if (!validationResult.IsValid)
         {
-            throw new ValidationException(validationResult.Errors);
+            throw new QuestionValidationException(validationResult.ToErrors());
         }
+
+        var calculator = new QuestionCalculator();
+
+        calculator.Calculate();
 
         int openUserQuestionsCount = await _questionsRepository
             .GetOpenUserQuestionsAsync(questionDto.UserId, cancellationToken);
 
         if (openUserQuestionsCount > 3)
         {
-            throw new Exception("Пользователь не может открыть больше 3 вопросов.");
+            throw new ToManyQuestionsException();
         }
 
         var questionId = Guid.NewGuid();
@@ -82,4 +92,12 @@ public class QuestionsService : IQuestionsService
     // {
     //
     // }
+}
+
+public class QuestionCalculator
+{
+    public void Calculate()
+    {
+        throw new NotImplementedException();
+    }
 }
