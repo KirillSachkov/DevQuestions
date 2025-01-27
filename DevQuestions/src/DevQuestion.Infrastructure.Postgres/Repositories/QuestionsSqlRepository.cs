@@ -1,9 +1,4 @@
-﻿using Dapper;
-using DevQuestions.Application.Database;
-using DevQuestions.Application.Questions;
-using DevQuestions.Domain.Questions;
-
-namespace DevQuestion.Infrastructure.Postgres.Repositories;
+﻿namespace DevQuestion.Infrastructure.Postgres.Repositories;
 
 // public class QuestionsSqlRepository : IQuestionsRepository
 // {

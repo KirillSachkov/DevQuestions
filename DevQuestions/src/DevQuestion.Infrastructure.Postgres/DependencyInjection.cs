@@ -1,7 +1,5 @@
 ﻿using DevQuestion.Infrastructure.Postgres.Repositories;
-using DevQuestions.Application.Database;
 using DevQuestions.Application.Questions;
-using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DevQuestion.Infrastructure.Postgres;

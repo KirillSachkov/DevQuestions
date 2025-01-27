@@ -1,11 +1,9 @@
-﻿using DevQuestion.Contracts.Questions;
+﻿using CSharpFunctionalExtensions;
+using DevQuestion.Contracts.Questions;
 using DevQuestions.Application.Extensions;
-using DevQuestions.Application.FulltextSeatch;
 using DevQuestions.Application.Questions.Fails;
-using DevQuestions.Application.Questions.Fails.Exceptions;
 using DevQuestions.Domain.Questions;
 using FluentValidation;
-using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using Shared;
 
@@ -27,24 +25,28 @@ public class QuestionsService : IQuestionsService
         _logger = logger;
     }
 
-    public async Task<Guid> Create(CreateQuestionDto questionDto, CancellationToken cancellationToken)
+    public async Task<Result<Guid, Failure>> Create(CreateQuestionDto questionDto, CancellationToken cancellationToken)
     {
         var validationResult = await _validator.ValidateAsync(questionDto, cancellationToken);
         if (!validationResult.IsValid)
         {
-            throw new QuestionValidationException(validationResult.ToErrors());
+            return validationResult.ToErrors();
         }
 
         var calculator = new QuestionCalculator();
 
-        calculator.Calculate();
+        var calculateResult = calculator.Calculate();
+        if (calculateResult.IsFailure)
+        {
+            return calculateResult.Error;
+        }
 
         int openUserQuestionsCount = await _questionsRepository
             .GetOpenUserQuestionsAsync(questionDto.UserId, cancellationToken);
 
         if (openUserQuestionsCount > 3)
         {
-            throw new ToManyQuestionsException();
+            return Errors.Questions.ToManyQuestions().ToFailure();
         }
 
         var questionId = Guid.NewGuid();
@@ -96,8 +98,9 @@ public class QuestionsService : IQuestionsService
 
 public class QuestionCalculator
 {
-    public void Calculate()
+    public Result<int, Failure> Calculate()
     {
-        throw new NotImplementedException();
+        // операция
+        return Error.Failure("", "").ToFailure();
     }
 }
