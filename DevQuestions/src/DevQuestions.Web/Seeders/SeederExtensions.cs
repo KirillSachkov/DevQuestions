@@ -1,4 +1,4 @@
-﻿using DevQuestion.Infrastructure.Postgres.Seeders;
+﻿using DevQuestion.Infrastructure.Postgres;
 
 namespace DevQuestions.Web.Seeders;
 

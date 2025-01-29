@@ -1,4 +1,4 @@
-﻿namespace DevQuestion.Infrastructure.Postgres.Repositories;
+﻿namespace DevQuestion.Infrastructure.Postgres.Questions;
 
 // public class QuestionsSqlRepository : IQuestionsRepository
 // {
