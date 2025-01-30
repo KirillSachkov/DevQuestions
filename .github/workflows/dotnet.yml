@@ -23,7 +23,7 @@ jobs:
         dotnet-version: 9.0.x
         
     - name: Restore dependencies
-      run: dotnet restore .\DevQuestions\DevQuestions.sln
+      run: dotnet restore
       
     - name: Build
       run: dotnet build .\DevQuestions\DevQuestions.sln --no-restore
