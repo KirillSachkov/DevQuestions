@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Framework\Framework.csproj" />
+    <ProjectReference Include="..\..\Core\Infrastructure\Infrastructure.S3\Infrastructure.S3.csproj" />
+    <ProjectReference Include="..\Questions.Application\Questions.Application.csproj" />
+    <ProjectReference Include="..\Questions.Infrastructure.Postgres\Questions.Infrastructure.Postgres.csproj" />
+  </ItemGroup>
+  
+</Project>
