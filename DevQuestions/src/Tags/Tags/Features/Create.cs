@@ -9,27 +9,30 @@ using Tags.Domain;
 
 namespace Tags.Features;
 
-public sealed class Create
+public static class Create
 {
+    public static class Handler
+    {
+        public static async Task<IResult> Handle(
+            [FromBody] CreateTagDto dto,
+            [FromServices] TagsDbContext tagsDbContext)
+        {
+            var tag = new Tag
+            {
+                Name = dto.Name,
+            };
+
+            await tagsDbContext.AddAsync(tag);
+
+            return Results.Ok(tag.Id);
+        }
+    }
+
     public sealed class Endpoint : IEndpoint
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPost("tags", Handler);
+            app.MapPost("tags", Handler.Handle);
         }
-    }
-
-    public static async Task<IResult> Handler(
-        CreateTagDto dto,
-        TagsDbContext tagsDbContext)
-    {
-        var tag = new Tag
-        {
-            Name = dto.Name,
-        };
-
-        await tagsDbContext.AddAsync(tag);
-
-        return Results.Ok(tag.Id);
     }
 }

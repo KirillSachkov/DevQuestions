@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using Questions.Application.Behaviors;
 using Shared.Abstractions;
 
 namespace Questions.Application;
@@ -12,17 +13,24 @@ public static class DependencyInjection
 
         var assembly = typeof(DependencyInjection).Assembly;
 
-        services.Scan(scan => scan.FromAssemblies(assembly)
-            .AddClasses(classes => classes
-                .AssignableToAny(typeof(ICommandHandler<,>), typeof(ICommandHandler<>)))
-            .AsSelfWithInterfaces()
-            .WithScopedLifetime());
+        services.AddMediatR(c =>
+        {
+            c.RegisterServicesFromAssembly(assembly);
 
-        services.Scan(scan => scan.FromAssemblies(assembly)
-            .AddClasses(classes => classes
-                .AssignableToAny(typeof(IQueryHandler<,>)))
-            .AsSelfWithInterfaces()
-            .WithScopedLifetime());
+            c.AddOpenBehavior(typeof(ValidationBehavior<,>));
+        });
+
+        // services.Scan(scan => scan.FromAssemblies(assembly)
+        //     .AddClasses(classes => classes
+        //         .AssignableToAny(typeof(ICommandHandler<,>), typeof(ICommandHandler<>)))
+        //     .AsSelfWithInterfaces()
+        //     .WithScopedLifetime());
+        //
+        // services.Scan(scan => scan.FromAssemblies(assembly)
+        //     .AddClasses(classes => classes
+        //         .AssignableToAny(typeof(IQueryHandler<,>)))
+        //     .AsSelfWithInterfaces()
+        //     .WithScopedLifetime());
 
         return services;
     }

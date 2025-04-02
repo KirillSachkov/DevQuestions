@@ -1,9 +1,8 @@
-﻿namespace Shared.Abstractions;
+﻿using MediatR;
 
-public interface IQuery;
+namespace Shared.Abstractions;
 
-public interface IQueryHandler<TResponse, in TQuery>
-    where TQuery : IQuery
-{
-    Task<TResponse> Handle(TQuery query, CancellationToken cancellationToken = default);
-}
+public interface IQuery<out TResponse> : IRequest<TResponse>;
+
+public interface IQueryHandler<TResponse, in TQuery> : IRequestHandler<TQuery, TResponse>
+    where TQuery : IQuery<TResponse>;

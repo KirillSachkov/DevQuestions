@@ -1,4 +1,5 @@
 ﻿using Framework;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,7 @@ namespace Tags.Features;
 
 public sealed class GetByIds
 {
-    public record GetByIdsQuery(GetByIdsDto Dto) : IQuery;
+    public record GetByIdsQuery(GetByIdsDto Dto) : IQuery<IReadOnlyList<TagDto>>;
 
     public sealed class Endpoint : IEndpoint
     {
@@ -21,10 +22,10 @@ public sealed class GetByIds
         {
             app.MapPost("tags/ids", async (
                 GetByIdsDto dto,
-                IQueryHandler<IReadOnlyList<TagDto>, GetByIdsQuery> handler,
+                ISender sender,
                 CancellationToken cancellationToken) =>
             {
-                var result = await handler.Handle(new GetByIdsQuery(dto), cancellationToken);
+                var result = await sender.Send(new GetByIdsQuery(dto), cancellationToken);
 
                 return Results.Ok(result);
             });

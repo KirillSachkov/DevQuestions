@@ -10,7 +10,7 @@ using Shared.Extensions;
 
 namespace Questions.Application.Features.CreateQuestionCommand;
 
-public class CreateQuestionCommandHandler : ICommandHandler<Guid, CreateQuestionCommand>
+public class CreateQuestionCommandHandler : ICommandHandler<CreateQuestionCommand, Result<Guid, Failure>>
 {
     private readonly ILogger<CreateQuestionCommandHandler> _logger;
     private readonly IQuestionsRepository _questionsRepository;
