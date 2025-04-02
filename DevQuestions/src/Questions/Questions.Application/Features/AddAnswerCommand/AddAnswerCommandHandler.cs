@@ -36,11 +36,11 @@ public class AddAnswerCommandHandler : ICommandHandler<Guid, AddAnswerCommand>
         AddAnswerCommand command,
         CancellationToken cancellationToken)
     {
-        var validationResult = await _validator.ValidateAsync(command.AddAnswerDto, cancellationToken);
-        if (!validationResult.IsValid)
-        {
-            return validationResult.ToErrors();
-        }
+        // var validationResult = await _validator.ValidateAsync(command.AddAnswerDto, cancellationToken);
+        // if (!validationResult.IsValid)
+        // {
+        //     return validationResult.ToErrors();
+        // }
 
         // var usersRatingResult = await _usersCommunicationService
         //     .GetUserRatingAsync(command.AddAnswerDto.UserId, cancellationToken);

@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using Questions.Application.Decorators;
 using Shared.Abstractions;
 
 namespace Questions.Application;
@@ -23,6 +24,10 @@ public static class DependencyInjection
                 .AssignableToAny(typeof(IQueryHandler<,>)))
             .AsSelfWithInterfaces()
             .WithScopedLifetime());
+
+        services.Decorate(typeof(ICommandHandler<,>), typeof(ValidationDecorator<,>));
+        services.Decorate(typeof(ICommandHandler<,>), typeof(TestDecorator<,>));
+        services.Decorate(typeof(ICommandHandler<,>), typeof(MetricsDecorator<,>));
 
         return services;
     }

@@ -1,5 +1,6 @@
 using Framework.ResponseExtensions;
 using Microsoft.AspNetCore.Mvc;
+using Questions.Application.Decorators;
 using Questions.Application.Features.AddAnswerCommand;
 using Questions.Application.Features.CreateQuestionCommand;
 using Questions.Application.Features.GetQuestionsWithFiltersQuery;
@@ -13,6 +14,28 @@ namespace Questions.Presenters;
 [Route("[controller]")]
 public class QuestionsController : ControllerBase
 {
+    [HttpPost("test")]
+    public async Task<IActionResult> Test(
+        [FromServices] ICommandHandler<Guid, TestCommand> commandHandler,
+        CancellationToken cancellationToken)
+    {
+        var command = new TestCommand();
+
+        var result = await commandHandler.Handle(command, cancellationToken);
+        return result.IsFailure ? result.Error.ToResponse() : Ok(result.Value);
+    }
+
+    [HttpPost("test2")]
+    public async Task<IActionResult> Test2(
+        [FromServices] ICommandHandler<Guid, Test2Command> commandHandler,
+        CancellationToken cancellationToken)
+    {
+        var command = new Test2Command();
+
+        var result = await commandHandler.Handle(command, cancellationToken);
+        return result.IsFailure ? result.Error.ToResponse() : Ok(result.Value);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create(
         [FromServices] ICommandHandler<Guid, CreateQuestionCommand> commandHandler,
